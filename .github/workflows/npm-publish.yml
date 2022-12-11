@@ -9,7 +9,7 @@ on:
     - master
 
 jobs:
-  build-and-pulish:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -25,4 +25,4 @@ jobs:
     - run: pnpm build
     - uses: JS-DevTools/npm-publish@v1
       with:
-        token: ${{ secrets.npm_token }}
+        token: ${{ secrets.NPM_TOKEN }}
