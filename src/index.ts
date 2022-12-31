@@ -1,8 +1,8 @@
 type Result<T, E> = [T, E]
 
+function goerr<T, E = Error>(asyncFunc: () => Promise<T>): Promise<Result<T, E>>
 function goerr<T, E = Error>(func: () => T): Result<T, E>
 function goerr<T, E = Error>(promise: Promise<T>): Promise<Result<T, E>>
-function goerr<T, E = Error>(asyncFunc: () => Promise<T>): Promise<Result<T, E>>
 
 function goerr(parameter: any): any {
   if (typeof parameter === 'function') {
