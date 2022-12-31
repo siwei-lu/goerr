@@ -1,7 +1,7 @@
 import goerr from '..'
 
 test('should return a tuple which has an error message as the last element', () => {
-  const [result, err] = goerr(() => {
+  const [result, err] = goerr((): void => {
     throw new Error('test')
   })
 
@@ -35,4 +35,8 @@ test('should return an error when the promise rejected', async () => {
 
   expect(result).toBeNull()
   expect(err.message).toEqual('error')
+})
+
+test('handle async function', async () => {
+  const [] = await goerr(() => Promise.resolve(10))
 })

@@ -1,6 +1,6 @@
-# goerr [![CircleCI](https://circleci.com/gh/IdanLoo/goerr.svg?style=svg)](https://circleci.com/gh/IdanLoo/goerr)
+# goerr
 
-handle throwing errors in golang way
+Handle errors in a better way.
 
 ## Install
 
@@ -9,6 +9,8 @@ handle throwing errors in golang way
 npm add goerr
 # install with yarn
 yarn add goerr
+# install with pnpm
+pnpm add goerr
 ```
 
 ## Import
@@ -17,7 +19,7 @@ yarn add goerr
 // ES Module
 import goerr from 'goerr'
 // CommonJS
-const goerr = require('goerr')
+const goerr = require('goerr').default
 ```
 
 ## Usage
@@ -28,7 +30,7 @@ const goerr = require('goerr')
 
 The value will be the first element of an array returned by `goerr`. Any error throwed when calling the function will be the second element of the array.
 
-**Note**: You can not return a `Promise` object in the `throwableFunction`. If you really want to handle asynchronous errors, see next part.
+**Note**: You cannot return a `Promise` object in the `throwableFunction`. If you want to handle asynchronous errors, see the next section.
 
 #### API
 
@@ -51,7 +53,7 @@ console.log(result)
 
 ### Handle An Asynchronous Promise
 
-`goerr` can aslo accept a `Promise` object in order to handle cases you have to do asynchronously.
+`goerr` can accept a `Promise` object in order to handle cases you have to do asynchronously.
 
 #### API
 
@@ -72,13 +74,40 @@ if (err) {
 console.log(result)
 ```
 
+### Handle An Asynchronous Function Calling
+
+`goerr` can accept an asynchronous function in which you could use `async/await`.
+
+#### API
+
+```js
+function goerr<T>(asyncFunc: () => Promise<T>): Promise<[T, Error]>
+```
+
+#### Example
+
+```js
+const [result, err] = await goerr(async () => {
+  const num1 = await calculateAsync()
+  const num2 = await calculateAsync()
+  return num1 + num2
+})
+
+if (err) {
+  // do something here
+}
+
+// go ahead with the result
+console.log(result)
+```
+
 ## Why This
 
 ### Background
 
-Since we all know that `try`/`catch` works good in JavaScript, you might be confused about if we really need to handle errors in golang way.
+Since we all know that `try`/`catch` works good in JavaScript, you might be confused about if we really need `goerr` to handle errors.
 
-Suppose now we are writing a function to return a list coming from a throwable function, and we think returing an empty list when an error throwed would be better.
+Suppose now we are writing a function to return a list coming from a throwable function, and return an empty list when an error throwed out.
 
 How could we do?
 
@@ -137,4 +166,4 @@ function listOf() {
 }
 ```
 
-Now you see the `for` loop becomes the top level of the function. It looks more clear, right?
+Now you see the `for` loop comes to the top level of the function. It looks more clear, right?
